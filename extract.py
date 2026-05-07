@@ -14,18 +14,40 @@ def extract_vitals(image_path):
         image_bytes = f.read()
 
     prompt = """
-    Look at this ICU monitor image and extract the vitals.
-    Return ONLY a JSON object like this:
+    This is an ICU patient monitor screen. Extract ALL visible data from it.
+    Return ONLY a JSON object with these fields:
     {
-        "heart_rate": 0,
-        "spo2": 0,
-        "blood_pressure_systolic": 0,
-        "blood_pressure_diastolic": 0,
-        "respiratory_rate": 0,
-        "temperature": 0
+        "heart_rate": null,
+        "heart_rate_unit": null,
+        "spo2": null,
+        "spo2_unit": null,
+        "pulse_rate": null,
+        "pulse_rate_unit": null,
+        "pi": null,
+        "pi_unit": null,
+        "nibp_systolic": null,
+        "nibp_diastolic": null,
+        "nibp_unit": null,
+        "nibp_status": null,
+        "temperature_t1": null,
+        "temperature_t1_unit": null,
+        "temperature_t2": null,
+        "temperature_t2_unit": null,
+        "ecg_status": null,
+        "patient_mode": null,
+        "operation_speed": null,
+        "waveform_type": null,
+        "device_name": null,
+        "timestamp": null,
+        "alarm_status": null,
+        "any_other_visible_data": null
     }
-    If a value is not visible, use null.
-    Return ONLY JSON, no explanation.
+    Rules:
+    - If value is visible and readable, extract it exactly as shown
+    - If value shows dashes (--), set as null
+    - If value is unclear or not visible, set as null
+    - Extract units separately (bpm, %, mmHg, C, F etc.)
+    - Return ONLY JSON, no explanation, no extra text
     """
 
     response = client.models.generate_content(
