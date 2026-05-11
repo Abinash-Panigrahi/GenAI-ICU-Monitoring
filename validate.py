@@ -1,5 +1,5 @@
 from pydantic import BaseModel, field_validator
-from typing import Optional
+from typing import Optional ,Any
 import json
 
 
@@ -27,7 +27,7 @@ class VitalsModel(BaseModel):
     device_name: Optional[str] = None
     timestamp: Optional[str] = None
     alarm_status: Optional[str] = None
-    any_other_visible_data: Optional[str] = None
+    any_other_visible_data: Optional[Any] = None
 
     @field_validator("heart_rate")
     def check_heart_rate(cls, v):

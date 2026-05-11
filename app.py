@@ -3,6 +3,7 @@ import cv2
 import time
 from extract import extract_vitals
 from validate import validate_vitals ,save_to_file
+from report import generate_report, generate_quick_status   
 
 st.set_page_config(page_title="ICU Monitor AI", layout="wide")
 st.title("🏥 ICU Monitor AI — Stage 3: Extraction + Validation")
@@ -29,6 +30,19 @@ with col2:
         if st.session_state.camera is not None:
             st.session_state.camera.release()
             st.session_state.camera = None
+
+if st.button("📋 Generate Report"):
+    with st.spinner("Generating report..."):
+
+        # Quick status — always on top
+        quick = generate_quick_status()
+        st.subheader("⚡ Quick Status")
+        st.info(quick)
+
+        # Full report — expandable
+        with st.expander("📄 View Full Clinical Report"):
+            report = generate_report()
+            st.markdown(report)
 
 # Settings
 interval = st.slider("Capture Interval (seconds)", 5, 60, 25)
