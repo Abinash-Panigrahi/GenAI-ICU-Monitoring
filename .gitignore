@@ -3,4 +3,4 @@ __pycache__/
 .env
 frame.jpg
 *.pyc
-*.json
+vitals_log.json

@@ -3,7 +3,8 @@ import cv2
 import time
 from extract import extract_vitals
 from validate import validate_vitals ,save_to_file
-from report import generate_report, generate_quick_status   
+from report import generate_report, generate_quick_status  
+from database import save_to_db 
 
 st.set_page_config(page_title="ICU Monitor AI", layout="wide")
 st.title("🏥 ICU Monitor AI — Stage 3: Extraction + Validation")
@@ -67,7 +68,7 @@ if st.session_state.running and st.session_state.camera is not None:
         try:
             vitals = extract_vitals("frame.jpg")
             vitals = validate_vitals(vitals)
-            save_to_file(vitals) 
+            save_to_db(vitals) 
             status_placeholder.success(f"Vitals extracted and validated at {time.strftime('%H:%M:%S')}")
 
             with vitals_placeholder.container():
